@@ -10,14 +10,16 @@ class Claudometer < Formula
   def install
     cd "ClaudeUsageBar" do
       system "swift", "build", "-c", "release", "--disable-sandbox"
-      bin.install ".build/release/ClaudeUsageBar" => "claudometer"
     end
 
+    # Install binary
+    bin.install "ClaudeUsageBar/.build/release/ClaudeUsageBar" => "claudometer"
+
     # Create .app bundle
-    app_bundle = prefix/"Claudometer.app/Contents"
-    (app_bundle/"MacOS").mkpath
-    (app_bundle/"MacOS").install bin/"claudometer" => "ClaudeUsageBar"
-    (app_bundle/"Info.plist").write info_plist
+    app_contents = prefix/"Claudometer.app/Contents"
+    (app_contents/"MacOS").mkpath
+    ln_sf bin/"claudometer", app_contents/"MacOS/ClaudeUsageBar"
+    (app_contents/"Info.plist").write info_plist
   end
 
   def info_plist
@@ -46,18 +48,14 @@ class Claudometer < Formula
   end
 
   def post_install
-    # Link the .app bundle to /Applications if the user wants
-    ohai "Claudometer.app has been built at:"
-    ohai "  #{prefix}/Claudometer.app"
+    ohai "To launch Claudometer:"
+    ohai "  open #{prefix}/Claudometer.app"
     ohai ""
     ohai "To add to Applications:"
     ohai "  ln -sf #{prefix}/Claudometer.app /Applications/Claudometer.app"
-    ohai ""
-    ohai "To launch:"
-    ohai "  open #{prefix}/Claudometer.app"
   end
 
   test do
-    assert_predicate prefix/"Claudometer.app/Contents/MacOS/ClaudeUsageBar", :exist?
+    assert_predicate bin/"claudometer", :exist?
   end
 end

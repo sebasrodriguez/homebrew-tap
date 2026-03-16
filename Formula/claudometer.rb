@@ -8,10 +8,12 @@ class Claudometer < Formula
   depends_on :macos => :sonoma
 
   def install
-    cd "ClaudeUsageBar" do
-      system "swift", "build", "-c", "release", "--disable-sandbox"
-      bin.install ".build/release/ClaudeUsageBar" => "claudometer"
-    end
+    system "swift", "build",
+           "-c", "release",
+           "--disable-sandbox",
+           "--package-path", buildpath/"ClaudeUsageBar"
+
+    bin.install buildpath/"ClaudeUsageBar/.build/release/ClaudeUsageBar" => "claudometer"
 
     # Create .app bundle with symlink to the binary
     app_contents = prefix/"Claudometer.app/Contents"

@@ -9,12 +9,10 @@ class Claudometer < Formula
 
   def install
     cd "ClaudeUsageBar" do
-      system "swift", "build", "-c", "release", "--disable-sandbox"
-
-      # Find and install the built binary
-      binary = Pathname.glob(".build/**/release/ClaudeUsageBar").first
-      binary ||= Pathname.new(".build/release/ClaudeUsageBar")
-      bin.install binary => "claudometer"
+      system "swift", "build", "-c", "release",
+             "--disable-sandbox",
+             "--scratch-path", buildpath/"build"
+      bin.install buildpath/"build/release/ClaudeUsageBar" => "claudometer"
     end
 
     # Create .app bundle with symlink to the binary

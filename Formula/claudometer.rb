@@ -10,12 +10,10 @@ class Claudometer < Formula
   def install
     cd "ClaudeUsageBar" do
       system "swift", "build", "-c", "release", "--disable-sandbox"
+      bin.install ".build/release/ClaudeUsageBar" => "claudometer"
     end
 
-    # Install binary
-    bin.install "ClaudeUsageBar/.build/release/ClaudeUsageBar" => "claudometer"
-
-    # Create .app bundle
+    # Create .app bundle with symlink to the binary
     app_contents = prefix/"Claudometer.app/Contents"
     (app_contents/"MacOS").mkpath
     ln_sf bin/"claudometer", app_contents/"MacOS/ClaudeUsageBar"

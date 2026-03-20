@@ -1,7 +1,7 @@
 class Tokentap < Formula
   desc "Multi-provider macOS menu bar app that monitors AI session usage (Claude, Codex)"
   homepage "https://github.com/sebasrodriguez/tokentap"
-  url "https://github.com/sebasrodriguez/tokentap.git", tag: "v0.2.0"
+  url "https://github.com/sebasrodriguez/tokentap.git", tag: "v0.2.1"
   license "MIT"
 
   depends_on xcode: ["15.0", :build]
